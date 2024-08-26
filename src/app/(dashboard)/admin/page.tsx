@@ -1,6 +1,6 @@
 import CountChart from "@/components/CountChart"
 import UserCard from "@/components/UserCard"
-'use client';
+// 'use client';
 
 const AdminPage = () => {
     return (
