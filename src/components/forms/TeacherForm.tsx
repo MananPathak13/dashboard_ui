@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import InputField from "../InputField";
 import Image from "next/image";
+import { createTeacher } from "@/lib/actions";
 
 
 const schema = z.object({
@@ -44,7 +45,7 @@ const TeacherForm = ({
 
   const onSubmit = (formData: Inputs) => {
     console.log(formData);
-    // Handle image and other inputs as needed
+
   };
 
   return (
@@ -60,7 +61,7 @@ const TeacherForm = ({
           register={register}
           name="username"
           defaultValue={data?.username}
-          error={errors.username}
+          error={errors?.username}
         />
 
         <InputField
@@ -69,7 +70,7 @@ const TeacherForm = ({
           name="email"
           type="email"
           defaultValue={data?.email}
-          error={errors.email}
+          error={errors?.email}
         />
         <InputField
           label="Password"
@@ -77,7 +78,7 @@ const TeacherForm = ({
           name="password"
           defaultValue={data?.password}
           type="password"
-          error={errors.password}
+          error={errors?.password}
         />
       </div>
       <span className="text-xs text-gray-500">Personal Information</span>
@@ -87,72 +88,72 @@ const TeacherForm = ({
           name="firstName"
           defaultValue={data?.firstName}
           register={register}
-          error={errors.firstName}
+          error={errors?.firstName}
         />
         <InputField
           label="Last Name"
           name="lastName"
           defaultValue={data?.lastName}
           register={register}
-          error={errors.lastName}
+          error={errors?.lastName}
         />
         <InputField
           label="Phone"
           name="phone"
           defaultValue={data?.phone}
           register={register}
-          error={errors.phone}
+          error={errors?.phone}
         />
         <InputField
           label="Address"
           name="address"
           defaultValue={data?.address}
           register={register}
-          error={errors.address}
+          error={errors?.address}
         />
         <InputField
           label="Blood Type"
           name="bloodType"
           defaultValue={data?.bloodType}
           register={register}
-          error={errors.bloodType}
+          error={errors?.bloodType}
         />
         <InputField
           label="Birthday"
           name="birthday"
           defaultValue={data?.birthday}
           register={register}
-          error={errors.birthday}
+          error={errors?.birthday}
           type="date"
         />
-      
-      <div className="flex flex-col gap-2 w-full md:w-1/4">
-        <label className="text-xs text-gray-500">Sex</label>
-        <select
-          className="ring-gray-300 p-2 rounded-md text-sm w-full"
-          {...register("sex")}
-          defaultValue={data?.sex}
-        >
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-        {errors.sex?.message && (
-          <p className="text-xs text-red-400">{errors.sex?.message.toString()}</p>
-        )}
-      </div>
 
-      <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
-        <label 
-        htmlFor="img"
-        className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer">
-            <Image src="/upload.png" alt="" width={28} height={28}/>
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Sex</label>
+          <select
+            className="ring-gray-300 p-2 rounded-md text-sm w-full"
+            {...register("sex")}
+            defaultValue={data?.sex}
+          >
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+          {errors.sex?.message && (
+            <p className="text-xs text-red-400">{errors.sex?.message.toString()}</p>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
+          <label
+            htmlFor="img"
+            className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer">
+            <Image src="/upload.png" alt="" width={28} height={28} />
             <span>Upload a photo</span>
-        </label>
-        <input type="file" id="img" {...register("img")} className="hidden"/>
-        {errors.img?.message && (
-          <p className="text-xs text-red-400">{errors.img?.message.toString()}</p>
-        )}
-      </div>
+          </label>
+          <input type="file" id="img" {...register("img")} className="hidden" />
+          {errors.img?.message && (
+            <p className="text-xs text-red-400">{errors?.img?.message.toString()}</p>
+          )}
+        </div>
 
       </div>
       <button className="bg-blue-400 text-white p-2 rounded-md">
