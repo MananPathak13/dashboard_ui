@@ -1,15 +1,14 @@
-import FormModal from "@/components/FormModal";
+import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, teachersData } from "@/lib/data";
+import { role } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { Class, Prisma, Subject, Teacher } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { Subjects } from "react-hook-form";
 
 type TeacherList = Teacher & { subjects: Subject[] } & { classes: Class[] };
 
@@ -86,8 +85,8 @@ const renderRow = (item: TeacherList) => (
         </Link>
         {role === "admin" && (
           <>
-            <FormModal table="teacher" type="update" data={item} />
-            <FormModal table="teacher" type="delete" data={item.id} />
+            <FormContainer table="teacher" type="update" data={item} />
+            <FormContainer table="teacher" type="delete" data={item.id} />
           </>
         )}
       </div>
@@ -154,7 +153,7 @@ const TeachersList = async ({
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" width={14} height={14} />
             </button>
-            {role === "admin" && <FormModal table="teacher" type="create" />}
+            {role === "admin" && <FormContainer table="teacher" type="create" />}
           </div>
         </div>
       </div>
