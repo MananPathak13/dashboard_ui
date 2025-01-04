@@ -70,11 +70,11 @@ const FormModal = ({
 
     useEffect(() => {
       if (state.success) {
-        toast(`Subject has been deleted!`)
+        toast(`${table} has been deleted!`)
         setOpen(false)
         router.refresh();
       }
-    }, [state]);
+    }, [state, router]);
     return type === "delete" && id ? (
       <form action={formAction} className="p-4 flex flex-col gap-4">
         <input type="text | number" name="id" value={id} hidden />

@@ -36,5 +36,6 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "typeRoots": ["./src", "./node_modules/@types"],
 }
