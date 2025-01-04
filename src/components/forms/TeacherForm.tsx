@@ -4,15 +4,11 @@ import { useForm } from "react-hook-form";
 import InputField from "../InputField";
 import Image from "next/image";
 import { teacherSchema, TeacherSchema } from "@/lib/formValidationSchemas";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useFormState } from "react-dom";
+import { Dispatch, SetStateAction, useActionState, useEffect, useState } from "react";
 import { createTeacher, updateTeacher } from "@/lib/actions";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { CldUploadWidget } from 'next-cloudinary';
-
-
-
 
 const TeacherForm = ({
   type,
@@ -35,7 +31,7 @@ const TeacherForm = ({
 
 
   const [img, setImg] = useState<any>();
-  const [state, formAction] = useFormState(
+  const [state, formAction] = useActionState(
     type === "create" ? createTeacher : updateTeacher,
     {
       success: false,
@@ -133,11 +129,21 @@ const TeacherForm = ({
         <InputField
           label="Birthday"
           name="birthday"
-          defaultValue={data?.birthday}
+          defaultValue={data?.birthday.toISOString().split("T")[0]}
           register={register}
           error={errors?.birthday}
           type="date"
         />
+        {data && (
+                    <InputField
+                        label="Id"
+                        name="id"
+                        defaultValue={data?.id}
+                        register={register}
+                        error={errors?.id}
+                        hidden
+                    />
+                )}
 
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Sex</label>

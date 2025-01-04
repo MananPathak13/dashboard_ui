@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useFormState } from "react-dom";
-import { deleteClass, deleteSubject, deleteTeacher } from "@/lib/actions";
+import { deleteClass, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { FormContainerProps } from "./FormContainer";
@@ -12,7 +12,7 @@ const deleteActionMap = {
   subject: deleteSubject,
   class: deleteClass,
   teacher: deleteTeacher,
-  // student: deleteStudent,
+  student: deleteStudent,
   // parent: deleteParent,
   // lesson: deleteLesson,
 
@@ -40,7 +40,7 @@ const forms: {
   ) => JSX.Element;
 } = {
   teacher: (setOpen, type, data, relatedData) => <TeacherForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
-  // student: (setOpen, type, data, relatedData) => <StudentForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
+  student: (setOpen, type, data, relatedData) => <StudentForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
   subject: (setOpen, type, data, relatedData) => <SubjectForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />,
   class: (setOpen, type, data, relatedData) => <ClassForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />
 }
@@ -62,7 +62,7 @@ const FormModal = ({
 
   const Form = () => {
 
-    const [state, formAction] = useFormState(deleteActionMap[table as DeleteActionKeys], {
+    const [state, formAction] = useActionState(deleteActionMap[table as DeleteActionKeys], {
       success: false,
       error: false,
     })

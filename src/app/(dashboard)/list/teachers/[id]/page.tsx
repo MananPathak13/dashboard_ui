@@ -1,9 +1,35 @@
 import BigCalendar from "@/components/BigCalendar";
+import FormContainer from "@/components/FormContainer";
+import { role } from "@/lib/data";
+import prisma from "@/lib/prisma";
+import { Teacher } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import React from "react";
 
-const SingleTeacherPage = () => {
+const SingleTeacherPage =  async (
+    {
+    params: {id}
+  }:
+   {params: {id: string}}) => {
+  
+    const teacher:(Teacher & { _count: { subjects: number; lessons: number; classes: number; } }) | null= await prisma.teacher.findUnique({
+      where: {id },
+      include: {
+        _count: {
+          select: {
+            subjects: true,
+            lessons: true, 
+            classes: true
+          }
+        }
+      }
+    })
+  
+    if(!teacher){
+      return notFound();
+    }
   return (
     <div className="flex-1 p-4 flex flex-col xl:flex-row">
       {/* LEFT */}
@@ -24,26 +50,31 @@ const SingleTeacherPage = () => {
             </div>
             {/* CARDS */}
             <div className="w-2/3 flex flex-col justify-between gap-4">
-              <h1 className="text-xl font-semibold">Leonard Snyder</h1>
+              <h1 className="text-xl font-semibold">{teacher.name + " " + teacher.surname}</h1>
+
+              {role ==="admin" && (
+                  <FormContainer table="teacher" type="update" data={teacher} />
+                  )}
+
               <p className="text-sm text-gray-500">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               </p>
               <div className="flex items-center justify-between gap-2 flex-wrap text-xs font-medium">
                 <div className="w-full md:w-1/3 flex items-center gap-2">
                   <Image src="/blood.png" alt="" width={14} height={14} />
-                  <span>A+</span>
+                  <span>{teacher.bloodType}</span>
                 </div>
                 <div className="w-full md:w-1/3 flex items-center gap-2">
                   <Image src="/date.png" alt="" width={14} height={14} />
-                  <span>January 2025</span>
+                  <span>{new Intl.DateTimeFormat("en-US").format(teacher.birthday) || "No birthday"}</span>
                 </div>
                 <div className="w-full md:w-1/3 flex items-center gap-2">
                   <Image src="/mail.png" alt="" width={14} height={14} />
-                  <span>user@gmail.com</span>
+                  <span>{teacher.email || "No email"} </span>
                 </div>
                 <div className="w-full md:w-1/3 flex items-center gap-2">
                   <Image src="/phone.png" alt="" width={14} height={14} />
-                  <span>9999999999</span>
+                  <span>{teacher.phone || "No phone"}</span>
                 </div>
               </div>
             </div>
@@ -73,7 +104,7 @@ const SingleTeacherPage = () => {
                 className="w-6 h-6"
               />
               <div className="">
-                <h1 className="text-xl font-semibold">2</h1>
+                <h1 className="text-xl font-semibold">{teacher._count.subjects}</h1>
                 <span className="text-sm text-gray-400">Branches</span>
               </div>
             </div>
@@ -87,7 +118,7 @@ const SingleTeacherPage = () => {
                 className="w-6 h-6"
               />
               <div className="">
-                <h1 className="text-xl font-semibold">6</h1>
+                <h1 className="text-xl font-semibold">{teacher._count.subjects}</h1>
                 <span className="text-sm text-gray-400">Lessons</span>
               </div>
             </div>
@@ -101,7 +132,7 @@ const SingleTeacherPage = () => {
                 className="w-6 h-6"
               />
               <div className="">
-                <h1 className="text-xl font-semibold">6</h1>
+                <h1 className="text-xl font-semibold">{teacher._count.classes}</h1>
                 <span className="text-sm text-gray-400">Classes</span>
               </div>
             </div>
